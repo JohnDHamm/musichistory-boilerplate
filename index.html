@@ -4,72 +4,93 @@
 <head>
   <meta charset="utf-8">
   <title>Music History</title>
-	<link rel="stylesheet" href="">
+	<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <!-- NAVBAR -->
-	<nav id="" class="">
-		<ul>
+	<nav id="navBar" class="navbar">
+		<ul class="">
 			<li><a href="" title="">View Music</a></li>
+			<span>|</span>
 			<li><a href="" title="">Add Music</a></li>
+			<span>|</span>
 			<li><a href="" title="">Profile</a></li>
 		</ul>
 	</nav>
 
-<!-- SIDEBAR -->
-	<div id="sidebar" class="">
-		<p class="sidebarTitles">Song length:</p>
-		<input type="range" name="songLength">
+<!-- CONTAINER -->
+<div class="container">
+	
+	<!-- SIDEBAR -->
+		<div id="sidebar" class="sideBar">
+			<p class="sidebarTitles">Song length:</p>
+			<input type="range" name="songLength">
 
-		<p class="sidebarTitles">Artist:<p>
-		<select name="artist">
-			<option disabled selected>select artist</option>
-		</select>
+			<p class="sidebarTitles">Artist:</p>
+			<select name="artist">
+				<option disabled selected>select artist</option>
+				<option>Artist</option>
+				<option>Artist</option>
+				<option>Artist</option>
+				<option>Artist</option>
+			</select>
 
-		<p class="sidebarTitles">Album:</p>
-		<select name="album">
-			<option disabled selected>select album</option>
-		</select>
+			<p class="sidebarTitles">Album:</p>
+			<select name="album">
+				<option disabled selected>select album</option>
+				<option>album</option>
+				<option>album</option>
+				<option>album</option>
+				<option>album</option>
+			</select>
 
-		<p class="sidebarTitles">Genre:</p>
-		<label for="rock"><input type="checkbox" name="rock">Rock</label>
-		<label for="pop"><input type="checkbox" name="pop">Pop</label>
-		<label for="blues"><input type="checkbox" name="blues">Blues</label>
-		<label for="classical"><input type="checkbox" name="classical">Classical</label>
-		<label for="jazz"><input type="checkbox" name="jazz">Jazz</label>
-		<label for="hipHop"><input type="checkbox" name="hipHop">Hip Hop</label>
+			<p class="sidebarTitles">Genre:</p>
+			<div class="floatLeft">
+				<label for="rock"><input type="checkbox" name="rock">Rock</label>
+				<label for="pop"><input type="checkbox" name="pop">Pop</label>
+				<label for="blues"><input type="checkbox" name="blues">Blues</label>
+			</div>
+			<div class="floatLeft">
+				<label for="classical"><input type="checkbox" name="classical">Classical</label>
+				<label for="jazz"><input type="checkbox" name="jazz">Jazz</label>
+				<label for="hipHop"><input type="checkbox" name="hipHop">Hip Hop</label>
+			</div>
+			<div class="clearFloat">
+			<br>
+				<button type="" class="filterButton">Filter</button>
+			</div>
+		</div>
 
-		<button type="" class="filterButton">Filter</button>
-	</div>
+	<!-- MAIN SECTION -->
+		<div id="main" class="mainSect">
+			<section class="song">
+				<h2 class="songName">Song Name</h2>
+				<p class="artistName">Artist name</p>
+				<p class="albumName">Album name</p>
+				<p class="genre">Genre</p>
+			</section>
+			<section class="song">
+				<h2 class="songName">Song Name</h2>
+				<p class="artistName">Artist name</p>
+				<p class="albumName">Album name</p>
+				<p class="genre">Genre</p>
+			</section>
+			<section class="song">
+				<h2 class="songName">Song Name</h2>
+				<p class="artistName">Artist name</p>
+				<p class="albumName">Album name</p>
+				<p class="genre">Genre</p>
+			</section>
+			<section class="song">
+				<h2 class="songName">Song Name</h2>
+				<p class="artistName">Artist name</p>
+				<p class="albumName">Album name</p>
+				<p class="genre">Genre</p>
+			</section>
 
-<!-- MAIN SECTION -->
-	<div id="main" class="">
-		<section class="song">
-			<h2 class="songName">Song Name</h2>
-			<p class="artistName">Artist name</p>
-			<p class="albumName">Album name</p>
-			<p class="genre">Genre</p>
-		</section>
-		<section class="song">
-			<h2 class="songName">Song Name</h2>
-			<p class="artistName">Artist name</p>
-			<p class="albumName">Album name</p>
-			<p class="genre">Genre</p>
-		</section>
-		<section class="song">
-			<h2 class="songName">Song Name</h2>
-			<p class="artistName">Artist name</p>
-			<p class="albumName">Album name</p>
-			<p class="genre">Genre</p>
-		</section>
-		<section class="song">
-			<h2 class="songName">Song Name</h2>
-			<p class="artistName">Artist name</p>
-			<p class="albumName">Album name</p>
-			<p class="genre">Genre</p>
-		</section>
+		</div>
 
 	</div>
 
