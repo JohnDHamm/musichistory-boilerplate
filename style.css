@@ -1,0 +1,103 @@
+body {
+	font-family: Arial, sans-serif;
+	padding: 0;
+	margin: 0;
+}
+
+/*NAVBAR*/
+.navbar {
+	background: #FFB4B0;
+	border: 2px solid black;
+	margin: 30px 60px 20px 60px;
+}
+
+li {
+	list-style-type: none;
+	display: inline;
+}
+
+a {
+	padding: 5px 10px;
+	text-decoration: none;
+	font-size: 1rem
+	color: black;
+}
+
+.container {
+	margin: 10px 60px;
+}
+
+/*SIDEBAR*/
+
+.sideBar {
+	background: #4DD7FA;
+	border: 2px solid black;
+	float: left;
+	width: 20%;
+	padding: 10px;
+}
+
+p.sidebarTitles {
+	font-size: .75rem;
+	margin: 10px 0 0 0;
+}
+
+label {
+	display: block;
+	padding-right: 20px;
+}
+
+.floatLeft {
+	/*float: left;*/
+	display: inline-block;
+}
+
+/*.floatRight {
+	float: left;
+
+}*/
+
+.filterButton {
+	display: block;
+	margin: 10px auto;
+	width: 40%;
+}
+
+.clearFloat {
+	clear: both;
+}
+
+
+
+/*MAIN SECTION*/
+.mainSect {
+	background: #FEFAC0 ;
+	border: 2px solid black;
+	float: right;
+	width: 70%;
+	padding-left: 10px;
+}
+
+p.artistName, p.albumName {
+	display: inline-block;
+	border-right: 1px solid black;
+	margin: 0;
+	padding:  0 10px;
+}
+
+p.genre {
+	display: inline-block;
+	margin: 0;
+	padding: 0 10px;
+}
+
+.songName {
+	margin: 0;
+	padding: 10px;
+	color: #785616;
+	font-weight: 400;
+}
+
+.song {
+	margin: 0 0 20px 0;
+}
