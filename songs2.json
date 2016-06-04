@@ -1,0 +1,19 @@
+{
+  "songs": [
+    {
+      "title": "Welcome to the Jungle",
+      "artist": "Guns & Roses",
+      "album": "Appetite for Destruction"
+    },
+    {
+      "title": "YYZ",
+      "artist": "Rush",
+      "album": "Moving Pictures"
+    },
+    {
+      "title": "Driving South",
+      "artist": "The Stone Roses",
+      "album": "Second Coming"
+    }
+  ]
+}

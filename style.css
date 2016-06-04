@@ -80,9 +80,12 @@ label {
 
 p.artistName, p.albumName {
 	display: inline-block;
-	border-right: 1px solid black;
 	margin: 0;
 	padding:  0 10px;
+}
+
+p.artistName {
+		border-right: 1px solid black;
 }
 
 p.genre {

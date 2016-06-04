@@ -22,7 +22,6 @@ for (i = 0; i < songs.length; i++) {
 	outputEl.innerHTML += `<div class="song"> ${songs[i]} </div>`;
 };
 
-console.log("songs", songs);
 
 // Must add each string to the DOM in index.html in the main content area.
 
