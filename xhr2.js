@@ -1,109 +1,96 @@
 "use strict";
+$(document).ready(function() {
+
+	function switchToSongsView() {
+		listViewEl.addClass("visible").removeClass("hidden");
+		addViewEl.addClass("hidden").removeClass("visible");
+		sideBarEl.addClass("visible").removeClass("hidden");
+	}
 
 
-var listViewEl = $("#main");
-var addViewEl = $("#addSongSection");
-var songList; //hold array of all songs
-var songsAdded = false; //determine if 2nd set of songs have been loaded
+	function displaySongList (list) {
+		var listLength = list.songs.length;
+		listViewEl.empty();
+		for (var i = 0; i < listLength; i++) {
+			listViewEl.append(`<section id="section--${i}" class="song"><h2 class="songName">${list.songs[i].title}</h2><p class="artistName">${list.songs[i].artist}</p><p class="albumName">${list.songs[i].album}</p><button id="delBtn--${i}" class="buttons">Delete Song</button></section>`);
+		};
 
-// toggle views with nav bar links for view list and add song
-var addSongLink = $("#addSong");
-var sideBarEl = $("#sidebar");
-$("#viewSongs").click(switchToSongsView);
-$("#addSong").click(function switchToAddSongView () {
-	listViewEl.addClass("hidden").removeClass("visible");
-	addViewEl.addClass("visible").removeClass("hidden");
-	sideBarEl.addClass("hidden").removeClass("visible");
+		if (songsAdded === false) { //if 2nd set of songs has not been added yet, add button for more songs
+			listViewEl.append(`<div id="more"><button id="moreButton">More songs</button></div>`);
+			$("#moreButton").on("click", addMoreSongs);
+		}
+
+		$(".buttons").on("click", deleteSong); //adds listeners to all delete buttons
+	}
+
+
+	function deleteSong(clickedButton) {
+		var clickedBtnID = event.target.id.split("--")[1]; //get ID # of clicked delete button
+		songList.songs.splice(clickedBtnID, 1);
+		displaySongList(songList);
+	}
+
+
+	function addMoreSongs() {
+		$.ajax({
+	      url: "songs2.json"
+	    }).done(function(data) {
+	    	song2List = data;
+			for (var i = 0; i < song2List.songs.length; i++) { //add new songs from 2nd JSON to current song list array
+				var newSongObject = song2List.songs[i]
+				songList.songs.push(newSongObject);
+			}
+			songsAdded = true;
+			displaySongList(songList);
+	    }).fail(function(xhr, status, error) {
+	      reject(error);
+	    });
+	}
+
+
+	function addSongToList(){
+	  var newSongToAdd = {};
+	  newSongToAdd.title = $("#newSongTitle").val();
+	  newSongToAdd.artist = $("#newArtist").val();
+	  newSongToAdd.album = $("#newAlbum").val();
+	  $(".newSongInput").val("");
+	  songList.songs.push(newSongToAdd);
+	  switchToSongsView();
+		displaySongList(songList);
+	}
+
+
+	var listViewEl = $("#main");
+	var addViewEl = $("#addSongSection");
+
+	// toggle views with nav bar links for view list and add song
+	var addSongLink = $("#addSong");
+	var sideBarEl = $("#sidebar");
+	$("#viewSongs").click(switchToSongsView);
+	$("#addSong").click(function switchToAddSongView () {
+		listViewEl.addClass("hidden").removeClass("visible");
+		addViewEl.addClass("visible").removeClass("hidden");
+		sideBarEl.addClass("hidden").removeClass("visible");
+	});
+	// add new song section
+	$("#addSongBtn").click(addSongToList);  //add song button
+
+
+
+	// loading songs
+	var songList; //hold array of all songs
+	var song2List; //to hold the 2nd json of songs
+	var songsAdded = false; //determine if 2nd set of songs have been loaded
+
+
+	$.ajax({
+      url: "songs.json"
+    }).done(function(data) {
+    	songList = data;
+    	displaySongList(songList);
+    }).fail(function(xhr, status, error) {
+      reject(error);
+    });
 });
 
-function switchToSongsView() {
-	listViewEl.addClass("visible").removeClass("hidden");
-	addViewEl.addClass("hidden").removeClass("visible");
-	sideBarEl.addClass("visible").removeClass("hidden");
-}
-
-// add new song section
-// var newSongTitle = document.getElementById("newSongTitle");
-// var newArtist = document.getElementById("newArtist");
-// var newAlbum = document.getElementById("newAlbum");
-
-$("#addSongBtn").click(addSongToList);  //add song button
-
-
-
-function loadSongs () {
-	var data = JSON.parse(event.target.responseText);
-	songList = data;
-	// console.log("songList", songList);
-	displaySongList(songList);
-}
-
-
-function displaySongList (list) {
-	var listLength = list.songs.length;
-	listViewEl.empty();
-	for (var i = 0; i < listLength; i++) {
-		listViewEl.append(`<section id="section--${i}" class="song"><h2 class="songName">${list.songs[i].title}</h2><p class="artistName">${list.songs[i].artist}</p><p class="albumName">${list.songs[i].album}</p><button id="delBtn--${i}" class="buttons">Delete Song</button></section>`);
-	};
-
-	if (songsAdded === false) { //if 2nd set of songs has not been added yet, add button for more songs
-		listViewEl.append(`<div id="more"><button id="moreButton">More songs</button></div>`);
-		// $("#moreButton").click(clickedMoreSongs());
-		$("#moreButton").on("click", clickedMoreSongs);
-		// var moreButtonPress = document.getElementById("moreButton");
-		// moreButtonPress.addEventListener("click", clickedMoreSongs);
-	}
-
-	var delButtonPress = document.getElementsByClassName("buttons");
-	for (var j = 0; j < listLength; j++) {
-		delButtonPress[j].addEventListener("click", deleteSong);
-	};
-}
-
-
-function deleteSong(clickedButton) {
-	var clickedBtnID = event.target.id.split("--")[1]; //get ID # of clicked delete button
-	// console.log("clicked button ID:", clickedBtnID);
-	songList.songs.splice(clickedBtnID, 1);
-	// console.log("songList", songList);
-	// clickedButton.currentTarget.parentNode.remove();
-	displaySongList(songList);
-}
-
-
-function clickedMoreSongs (clickMoreButton) {
-	var myRequest2 = new XMLHttpRequest();
-	myRequest2.addEventListener("load", appendList);
-	myRequest2.open("GET", "songs2.json");
-	myRequest2.send();
-}
-
-
-function appendList() {
-	var newData = JSON.parse(event.target.responseText);
-	for (var i = 0; i < newData.songs.length; i++) { //add new songs from 2nd JSON to current song list array
-		var newSongObject = newData.songs[i]
-		songList.songs.push(newSongObject);
-	}
-	songsAdded = true;
-	displaySongList(songList);
-}
-
-function addSongToList(){
-  var newSongToAdd = {};
-  newSongToAdd.title = $("#newSongTitle").val();
-  newSongToAdd.artist = $("#newArtist").val();
-  newSongToAdd.album = $("#newAlbum").val();
-  songList.songs.push(newSongToAdd);
-  switchToSongsView();
-	displaySongList(songList);
-}
-
-
-
-var myRequest = new XMLHttpRequest();
-
-myRequest.addEventListener("load", loadSongs);
-myRequest.open("GET", "songs.json");
-myRequest.send();
 
