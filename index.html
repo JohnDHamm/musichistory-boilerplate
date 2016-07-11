@@ -12,9 +12,9 @@
 <!-- NAVBAR -->
 	<nav id="navBar" class="navbar">
 		<ul class="">
-			<li><a href="" title="">View Music</a></li>
+			<li id="viewSongs">View Music</li>
 			<span>|</span>
-			<li><a href="" title="">Add Music</a></li>
+			<li id="addSong">Add Music</li>
 			<span>|</span>
 			<li><a href="" title="">Profile</a></li>
 		</ul>
@@ -65,35 +65,20 @@
 
 	<!-- MAIN SECTION -->
 		<div id="main" class="mainSect">
-<!-- 			<section class="song">
-				<h2 class="songName">Song Name</h2>
-				<p class="artistName">Artist name</p>
-				<p class="albumName">Album name</p>
-				<p class="genre">Genre</p>
-			</section>
-			<section class="song">
-				<h2 class="songName">Song Name</h2>
-				<p class="artistName">Artist name</p>
-				<p class="albumName">Album name</p>
-				<p class="genre">Genre</p>
-			</section>
-			<section class="song">
-				<h2 class="songName">Song Name</h2>
-				<p class="artistName">Artist name</p>
-				<p class="albumName">Album name</p>
-				<p class="genre">Genre</p>
-			</section>
-			<section class="song">
-				<h2 class="songName">Song Name</h2>
-				<p class="artistName">Artist name</p>
-				<p class="albumName">Album name</p>
-				<p class="genre">Genre</p>
-			</section> -->
+
+
 
 		</div>
+	<!-- ADD SONG SECTION -->
+		<div id="addSongSection" class="hidden">
+			<label for"songTitle">Enter song title: <input type="text" name="songTitle" size="40"></label>
+			<label for"artist">Enter artist: <input type="text" name="artist" size="40"></label>
+			<label for"album">Enter album: <input type="text" name="album" size="40"></label>
+		</div>
 
-	</div>
-<script type="text/javascript" src="songs.js"></script>
+
+
+<script type="text/javascript" src="xhr2.js"></script>
 </body>
 </html>
 
