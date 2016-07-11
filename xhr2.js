@@ -9,8 +9,14 @@ var addSongLink = document.getElementById("addSong");
 addSongLink.addEventListener("click", switchToAddSongView);
 var sideBarEl = document.getElementById("sidebar");
 
+var newSongTitle = document.getElementById("newSongTitle");
+var newArtist = document.getElementById("newArtist");
+var newAlbum = document.getElementById("newAlbum");
+
+var addSongBtn = document.getElementById("addSongBtn");
+addSongBtn.addEventListener("click", addSongToList);
+
 function switchToSongsView() {
-	console.log("clicked view songs");
 	outputEl.classList.add("visible");
 	outputEl.classList.remove("hidden");
 	addView.classList.add("hidden");
@@ -20,7 +26,6 @@ function switchToSongsView() {
 }
 
 function switchToAddSongView () {
-	console.log("clicked add song");
 	outputEl.classList.add("hidden");
 	outputEl.classList.remove("visible");
 	addView.classList.add("visible");
@@ -33,7 +38,7 @@ function switchToAddSongView () {
 function loadSongs () {
 	var data = JSON.parse(event.target.responseText);
 	songList = data;
-	console.log("songList", songList);
+	// console.log("songList", songList);
 	displaySongList(songList);
 }
 
@@ -60,9 +65,9 @@ function displaySongList (list) {
 
 function deleteSong(clickedButton) {
 	var clickedBtnID = event.target.id.split("--")[1]; //get ID # of clicked delete button
-	console.log("clicked button ID:", clickedBtnID);
+	// console.log("clicked button ID:", clickedBtnID);
 	songList.songs.splice(clickedBtnID, 1);
-	console.log("songList", songList);
+	// console.log("songList", songList);
 	// clickedButton.currentTarget.parentNode.remove();
 	displaySongList(songList);
 }
@@ -78,12 +83,24 @@ function clickedMoreSongs (clickMoreButton) {
 
 function appendList() {
 	var newData = JSON.parse(event.target.responseText);
-
 	for (var i = 0; i < newData.songs.length; i++) { //add new songs from 2nd JSON to current song list array
 		var newSongObject = newData.songs[i]
 		songList.songs.push(newSongObject);
 	}
 	songsAdded = true;
+	displaySongList(songList);
+}
+
+function addSongToList(){
+	var title = newSongTitle.value;
+	var artist = newArtist.value;
+	var album = newAlbum.value;
+  var newSongToAdd = {};
+  newSongToAdd.title = `${title}`;
+  newSongToAdd.artist = `${artist}`;
+  newSongToAdd.album = `${album}`;
+  songList.songs.push(newSongToAdd);
+  switchToSongsView();
 	displaySongList(songList);
 }
 
