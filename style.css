@@ -12,6 +12,9 @@ body {
 }
 
 li {
+	padding: 5px 10px;
+	font-size: 1rem
+	color: black;
 	list-style-type: none;
 	display: inline;
 }
@@ -103,4 +106,12 @@ p.genre {
 
 .song {
 	margin: 0 0 20px 0;
+}
+
+.hidden {
+	display: none;
+}
+
+.visible {
+	display: inline-block;
 }
