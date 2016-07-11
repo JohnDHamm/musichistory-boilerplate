@@ -1,38 +1,34 @@
-var outputEl = document.getElementById("main");
-var addView = document.getElementById("addSongSection");
+"use strict";
+
+
+var listViewEl = $("#main");
+var addViewEl = $("#addSongSection");
 var songList; //hold array of all songs
 var songsAdded = false; //determine if 2nd set of songs have been loaded
 
-var viewSongsLink = document.getElementById("viewSongs");
-viewSongsLink.addEventListener("click", switchToSongsView);
-var addSongLink = document.getElementById("addSong");
-addSongLink.addEventListener("click", switchToAddSongView);
-var sideBarEl = document.getElementById("sidebar");
-
-var newSongTitle = document.getElementById("newSongTitle");
-var newArtist = document.getElementById("newArtist");
-var newAlbum = document.getElementById("newAlbum");
-
-var addSongBtn = document.getElementById("addSongBtn");
-addSongBtn.addEventListener("click", addSongToList);
+// toggle views with nav bar links for view list and add song
+var addSongLink = $("#addSong");
+var sideBarEl = $("#sidebar");
+$("#viewSongs").click(switchToSongsView);
+$("#addSong").click(function switchToAddSongView () {
+	listViewEl.addClass("hidden").removeClass("visible");
+	addViewEl.addClass("visible").removeClass("hidden");
+	sideBarEl.addClass("hidden").removeClass("visible");
+});
 
 function switchToSongsView() {
-	outputEl.classList.add("visible");
-	outputEl.classList.remove("hidden");
-	addView.classList.add("hidden");
-	addView.classList.remove("visible");
-	sideBarEl.classList.add("visible");
-	sideBarEl.classList.remove("hidden");
+	listViewEl.addClass("visible").removeClass("hidden");
+	addViewEl.addClass("hidden").removeClass("visible");
+	sideBarEl.addClass("visible").removeClass("hidden");
 }
 
-function switchToAddSongView () {
-	outputEl.classList.add("hidden");
-	outputEl.classList.remove("visible");
-	addView.classList.add("visible");
-	addView.classList.remove("hidden");
-	sideBarEl.classList.add("hidden");
-	sideBarEl.classList.remove("visible");
-}
+// add new song section
+// var newSongTitle = document.getElementById("newSongTitle");
+// var newArtist = document.getElementById("newArtist");
+// var newAlbum = document.getElementById("newAlbum");
+
+$("#addSongBtn").click(addSongToList);  //add song button
+
 
 
 function loadSongs () {
@@ -45,15 +41,17 @@ function loadSongs () {
 
 function displaySongList (list) {
 	var listLength = list.songs.length;
-	outputEl.innerHTML = "";
+	listViewEl.empty();
 	for (var i = 0; i < listLength; i++) {
-		outputEl.innerHTML += `<section id="section--${i}" class="song"><h2 class="songName">${list.songs[i].title}</h2><p class="artistName">${list.songs[i].artist}</p><p class="albumName">${list.songs[i].album}</p><button id="delBtn--${i}" class="buttons">Delete Song</button></section>`;
+		listViewEl.append(`<section id="section--${i}" class="song"><h2 class="songName">${list.songs[i].title}</h2><p class="artistName">${list.songs[i].artist}</p><p class="albumName">${list.songs[i].album}</p><button id="delBtn--${i}" class="buttons">Delete Song</button></section>`);
 	};
 
 	if (songsAdded === false) { //if 2nd set of songs has not been added yet, add button for more songs
-		outputEl.innerHTML += `<div id="more"><button id="moreButton">More songs</button></div>`;
-		var moreButtonPress = document.getElementById("moreButton");
-		moreButtonPress.addEventListener("click", clickedMoreSongs);
+		listViewEl.append(`<div id="more"><button id="moreButton">More songs</button></div>`);
+		// $("#moreButton").click(clickedMoreSongs());
+		$("#moreButton").on("click", clickedMoreSongs);
+		// var moreButtonPress = document.getElementById("moreButton");
+		// moreButtonPress.addEventListener("click", clickedMoreSongs);
 	}
 
 	var delButtonPress = document.getElementsByClassName("buttons");
@@ -92,13 +90,10 @@ function appendList() {
 }
 
 function addSongToList(){
-	var title = newSongTitle.value;
-	var artist = newArtist.value;
-	var album = newAlbum.value;
   var newSongToAdd = {};
-  newSongToAdd.title = `${title}`;
-  newSongToAdd.artist = `${artist}`;
-  newSongToAdd.album = `${album}`;
+  newSongToAdd.title = $("#newSongTitle").val();
+  newSongToAdd.artist = $("#newArtist").val();
+  newSongToAdd.album = $("#newAlbum").val();
   songList.songs.push(newSongToAdd);
   switchToSongsView();
 	displaySongList(songList);
