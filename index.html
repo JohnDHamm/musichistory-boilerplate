@@ -71,14 +71,16 @@
 		</div>
 	<!-- ADD SONG SECTION -->
 		<div id="addSongSection" class="hidden">
-			<label for"songTitle">Enter song title: <input type="text" name="songTitle" size="40"></label>
-			<label for"artist">Enter artist: <input type="text" name="artist" size="40"></label>
-			<label for"album">Enter album: <input type="text" name="album" size="40"></label>
+			<label for="songTitle">Enter song title: <input id="newSongTitle" type="text" name="songTitle" size="40" class="newSongInput"></label>
+			<label for="artist">Enter artist: <input id="newArtist" type="text" name="artist" size="40" class="newSongInput"></label>
+			<label for="album">Enter album: <input id = "newAlbum" type="text" name="album" size="40" class="newSongInput"></label>
+			<button id="addSongBtn" type="" class="addSongButton">Add song to list</button>
+
 		</div>
 
 
-
-<script type="text/javascript" src="xhr2.js"></script>
+	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="xhr2.js"></script>
 </body>
 </html>
 

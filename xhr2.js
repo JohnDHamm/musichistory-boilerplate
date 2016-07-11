@@ -1,97 +1,96 @@
-var outputEl = document.getElementById("main");
-var addView = document.getElementById("addSongSection");
-var songList; //hold array of all songs
-var songsAdded = false; //determine if 2nd set of songs have been loaded
+"use strict";
+$(document).ready(function() {
 
-var viewSongsLink = document.getElementById("viewSongs");
-viewSongsLink.addEventListener("click", switchToSongsView);
-var addSongLink = document.getElementById("addSong");
-addSongLink.addEventListener("click", switchToAddSongView);
-var sideBarEl = document.getElementById("sidebar");
-
-function switchToSongsView() {
-	console.log("clicked view songs");
-	outputEl.classList.add("visible");
-	outputEl.classList.remove("hidden");
-	addView.classList.add("hidden");
-	addView.classList.remove("visible");
-	sideBarEl.classList.add("visible");
-	sideBarEl.classList.remove("hidden");
-}
-
-function switchToAddSongView () {
-	console.log("clicked add song");
-	outputEl.classList.add("hidden");
-	outputEl.classList.remove("visible");
-	addView.classList.add("visible");
-	addView.classList.remove("hidden");
-	sideBarEl.classList.add("hidden");
-	sideBarEl.classList.remove("visible");
-}
-
-
-function loadSongs () {
-	var data = JSON.parse(event.target.responseText);
-	songList = data;
-	console.log("songList", songList);
-	displaySongList(songList);
-}
-
-
-function displaySongList (list) {
-	var listLength = list.songs.length;
-	outputEl.innerHTML = "";
-	for (var i = 0; i < listLength; i++) {
-		outputEl.innerHTML += `<section id="section--${i}" class="song"><h2 class="songName">${list.songs[i].title}</h2><p class="artistName">${list.songs[i].artist}</p><p class="albumName">${list.songs[i].album}</p><button id="delBtn--${i}" class="buttons">Delete Song</button></section>`;
-	};
-
-	if (songsAdded === false) { //if 2nd set of songs has not been added yet, add button for more songs
-		outputEl.innerHTML += `<div id="more"><button id="moreButton">More songs</button></div>`;
-		var moreButtonPress = document.getElementById("moreButton");
-		moreButtonPress.addEventListener("click", clickedMoreSongs);
+	function switchToSongsView() {
+		listViewEl.addClass("visible").removeClass("hidden");
+		addViewEl.addClass("hidden").removeClass("visible");
+		sideBarEl.addClass("visible").removeClass("hidden");
 	}
 
-	var delButtonPress = document.getElementsByClassName("buttons");
-	for (var j = 0; j < listLength; j++) {
-		delButtonPress[j].addEventListener("click", deleteSong);
-	};
-}
 
+	function displaySongList (list) {
+		var listLength = list.songs.length;
+		listViewEl.empty();
+		for (var i = 0; i < listLength; i++) {
+			listViewEl.append(`<section id="section--${i}" class="song"><h2 class="songName">${list.songs[i].title}</h2><p class="artistName">${list.songs[i].artist}</p><p class="albumName">${list.songs[i].album}</p><button id="delBtn--${i}" class="buttons">Delete Song</button></section>`);
+		};
 
-function deleteSong(clickedButton) {
-	var clickedBtnID = event.target.id.split("--")[1]; //get ID # of clicked delete button
-	console.log("clicked button ID:", clickedBtnID);
-	songList.songs.splice(clickedBtnID, 1);
-	console.log("songList", songList);
-	// clickedButton.currentTarget.parentNode.remove();
-	displaySongList(songList);
-}
+		if (songsAdded === false) { //if 2nd set of songs has not been added yet, add button for more songs
+			listViewEl.append(`<div id="more"><button id="moreButton">More songs</button></div>`);
+			$("#moreButton").on("click", addMoreSongs);
+		}
 
-
-function clickedMoreSongs (clickMoreButton) {
-	var myRequest2 = new XMLHttpRequest();
-	myRequest2.addEventListener("load", appendList);
-	myRequest2.open("GET", "songs2.json");
-	myRequest2.send();
-}
-
-
-function appendList() {
-	var newData = JSON.parse(event.target.responseText);
-
-	for (var i = 0; i < newData.songs.length; i++) { //add new songs from 2nd JSON to current song list array
-		var newSongObject = newData.songs[i]
-		songList.songs.push(newSongObject);
+		$(".buttons").on("click", deleteSong); //adds listeners to all delete buttons
 	}
-	songsAdded = true;
-	displaySongList(songList);
-}
+
+
+	function deleteSong(clickedButton) {
+		var clickedBtnID = event.target.id.split("--")[1]; //get ID # of clicked delete button
+		songList.songs.splice(clickedBtnID, 1);
+		displaySongList(songList);
+	}
+
+
+	function addMoreSongs() {
+		$.ajax({
+	      url: "songs2.json"
+	    }).done(function(data) {
+	    	song2List = data;
+			for (var i = 0; i < song2List.songs.length; i++) { //add new songs from 2nd JSON to current song list array
+				var newSongObject = song2List.songs[i]
+				songList.songs.push(newSongObject);
+			}
+			songsAdded = true;
+			displaySongList(songList);
+	    }).fail(function(xhr, status, error) {
+	      reject(error);
+	    });
+	}
+
+
+	function addSongToList(){
+	  var newSongToAdd = {};
+	  newSongToAdd.title = $("#newSongTitle").val();
+	  newSongToAdd.artist = $("#newArtist").val();
+	  newSongToAdd.album = $("#newAlbum").val();
+	  $(".newSongInput").val("");
+	  songList.songs.push(newSongToAdd);
+	  switchToSongsView();
+		displaySongList(songList);
+	}
+
+
+	var listViewEl = $("#main");
+	var addViewEl = $("#addSongSection");
+
+	// toggle views with nav bar links for view list and add song
+	var addSongLink = $("#addSong");
+	var sideBarEl = $("#sidebar");
+	$("#viewSongs").click(switchToSongsView);
+	$("#addSong").click(function switchToAddSongView () {
+		listViewEl.addClass("hidden").removeClass("visible");
+		addViewEl.addClass("visible").removeClass("hidden");
+		sideBarEl.addClass("hidden").removeClass("visible");
+	});
+	// add new song section
+	$("#addSongBtn").click(addSongToList);  //add song button
 
 
 
-var myRequest = new XMLHttpRequest();
+	// loading songs
+	var songList; //hold array of all songs
+	var song2List; //to hold the 2nd json of songs
+	var songsAdded = false; //determine if 2nd set of songs have been loaded
 
-myRequest.addEventListener("load", loadSongs);
-myRequest.open("GET", "songs.json");
-myRequest.send();
+
+	$.ajax({
+      url: "songs.json"
+    }).done(function(data) {
+    	songList = data;
+    	displaySongList(songList);
+    }).fail(function(xhr, status, error) {
+      reject(error);
+    });
+});
+
 
