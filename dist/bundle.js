@@ -7,31 +7,27 @@ console.log("SongLister", SongLister);
 $(document).ready(function() {
 
 	// toggle views with nav bar links for view list and add song
-	
 	$("#viewSongs").click(function(){
 		SongLister.switchViews("viewSongs");
 	});
-
 	$("#addSong").click(function(){
 		SongLister.switchViews("addSongs");
 	});
 
-
-
-	// add new song section
+	// add new song button
 	$("#addSongBtn").click(function(){
 		SongLister.loadSongs.addSong();
 		SongLister.switchViews("viewSongs");
-	});  //add song button
-
-	
-
+	});
 
 	//initial list of songs displayed
 	let currentView = "viewSongs";
-
 	SongLister.loadSongs.getSongList();
 
+	//filtering
+	$("#filterButton").click(function(){
+		SongLister.filter();
+	});
 
 
 });
@@ -81,12 +77,32 @@ function displaySongList (list) {
 		$("#moreButton").on("click", getMoreSongs);
 	}
 	$(".buttons").on("click", deleteSong); //adds listeners to all delete buttons
+	updateFilterSelects(list);
 }
 
 function deleteSong(clickedButton) {
 	var clickedBtnID = event.target.id.split("--")[1]; //get ID # of clicked delete button
 	songList.songs.splice(clickedBtnID, 1);
 	displaySongList(songList);
+}
+
+function updateFilterSelects(list){
+	var listLength = list.songs.length;
+	var artistsArray = [];
+	var albumArray = [];
+	$("#artistSelect").empty(); //clear artists select dropdown
+	$("#artistSelect").append(`<option disabled selected>select artist</option>`); //add select notification
+	for (var i = 0; i < listLength; i++) {
+		artistsArray.push(list.songs[i].artist);
+		$("#artistSelect").append(`<option>${list.songs[i].artist}</option>`);
+
+	}$("#albumSelect").empty(); //clear album select dropdown
+	$("#albumSelect").append(`<option disabled selected>select album</option>`); //add select notification
+	for (var i = 0; i < listLength; i++) {
+		artistsArray.push(list.songs[i].artist);
+		$("#albumSelect").append(`<option>${list.songs[i].album}</option>`);
+	}
+
 }
 
 
@@ -97,6 +113,7 @@ let getSongList = function(){
     	songList = data;
     	console.log("songList", songList);
 			displaySongList(songList);
+			// updateFilterSelects(songList);
     });
 };
 
@@ -111,6 +128,7 @@ let getMoreSongs = function(){
 			}
 			songsAdded = true;
 			displaySongList(songList);
+			// updateFilterSelects(songList);
 	    }).fail(function(xhr, status, error) {
 	      reject(error);
 	    });
@@ -126,6 +144,7 @@ let addSong = function(){
   songList.songs.push(newSongToAdd);
  	// switchView();
 	displaySongList(songList);
+	// updateFilterSelects(songList);
 };
 
 
