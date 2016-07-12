@@ -6,14 +6,22 @@ console.log("SongLister", SongLister);
 $(document).ready(function() {
 
 	// toggle views with nav bar links for view list and add song
-	// var addSongLink = $("#addSong");
 	
-	// $("#viewSongs").click(switchView("viewSongs"));
-	// $("#addSong").click(switchView("addSongs"));
+	$("#viewSongs").click(function(){
+		SongLister.switchViews("viewSongs");
+	});
+
+	$("#addSong").click(function(){
+		SongLister.switchViews("addSongs");
+	});
+
 
 
 	// add new song section
-	// $("#addSongBtn").click(addSongToList);  //add song button
+	$("#addSongBtn").click(function(){
+		SongLister.loadSongs.addSong();
+		SongLister.switchViews("viewSongs");
+	});  //add song button
 
 	
 

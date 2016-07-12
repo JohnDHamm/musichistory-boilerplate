@@ -6,7 +6,7 @@ var listViewEl = $("#main");
 var addViewEl = $("#addSongSection");
 var sideBarEl = $("#sidebar");
 
-let switchView = function(currentView) {
+let switchViews = function(currentView) {
 
 	if (currentView === "viewSongs") {
 		listViewEl.addClass("visible").removeClass("hidden");
@@ -21,4 +21,4 @@ let switchView = function(currentView) {
 };
 
 
-module.exports = switchView;
+module.exports = switchViews;

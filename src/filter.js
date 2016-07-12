@@ -7,7 +7,7 @@
 
 "use strict";
 
-let loadingSongs = require("./loadSongs");
+let loadSongs = require("./loadSongs");
 
 let filter = function(artist, album){
 

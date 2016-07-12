@@ -7,14 +7,22 @@ console.log("SongLister", SongLister);
 $(document).ready(function() {
 
 	// toggle views with nav bar links for view list and add song
-	// var addSongLink = $("#addSong");
 	
-	// $("#viewSongs").click(switchView("viewSongs"));
-	// $("#addSong").click(switchView("addSongs"));
+	$("#viewSongs").click(function(){
+		SongLister.switchViews("viewSongs");
+	});
+
+	$("#addSong").click(function(){
+		SongLister.switchViews("addSongs");
+	});
+
 
 
 	// add new song section
-	// $("#addSongBtn").click(addSongToList);  //add song button
+	$("#addSongBtn").click(function(){
+		SongLister.loadSongs.addSong();
+		SongLister.switchViews("viewSongs");
+	});  //add song button
 
 	
 
@@ -39,7 +47,7 @@ $(document).ready(function() {
 
 "use strict";
 
-let loadingSongs = require("./loadSongs");
+let loadSongs = require("./loadSongs");
 
 let filter = function(artist, album){
 
@@ -68,12 +76,10 @@ function displaySongList (list) {
 	for (var i = 0; i < listLength; i++) {
 		listViewEl.append(`<section id="section--${i}" class="song"><h2 class="songName">${list.songs[i].title}</h2><p class="artistName">${list.songs[i].artist}</p><p class="albumName">${list.songs[i].album}</p><button id="delBtn--${i}" class="buttons">Delete Song</button></section>`);
 	}
-
 	if (songsAdded === false) { //if 2nd set of songs has not been added yet, add button for more songs
 		listViewEl.append(`<div id="more"><button id="moreButton">More songs</button></div>`);
 		$("#moreButton").on("click", getMoreSongs);
 	}
-
 	$(".buttons").on("click", deleteSong); //adds listeners to all delete buttons
 }
 
@@ -111,9 +117,15 @@ let getMoreSongs = function(){
 };
 
 
-
 let addSong = function(){
-
+	var newSongToAdd = {};
+  newSongToAdd.title = $("#newSongTitle").val();
+  newSongToAdd.artist = $("#newArtist").val();
+  newSongToAdd.album = $("#newAlbum").val();
+  $(".newSongInput").val("");
+  songList.songs.push(newSongToAdd);
+ 	// switchView();
+	displaySongList(songList);
 };
 
 
@@ -142,7 +154,7 @@ var listViewEl = $("#main");
 var addViewEl = $("#addSongSection");
 var sideBarEl = $("#sidebar");
 
-let switchView = function(currentView) {
+let switchViews = function(currentView) {
 
 	if (currentView === "viewSongs") {
 		listViewEl.addClass("visible").removeClass("hidden");
@@ -157,7 +169,7 @@ let switchView = function(currentView) {
 };
 
 
-module.exports = switchView;
+module.exports = switchViews;
 },{}]},{},[1])
 
 
