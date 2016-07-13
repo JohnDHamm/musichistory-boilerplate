@@ -7,11 +7,7 @@
 
 "use strict";
 
-// let loadSongs = require("./loadSongs");
-
 let filter = function(currentList){ //create an array only with filtered songs
-	// var currentList = loadSongs.getCurrentList();
-	console.log("currentList", currentList);
 	var filterArtist = $("#artistSelect option:selected").text();
 	var filterAlbum = $("#albumSelect option:selected").text();
 

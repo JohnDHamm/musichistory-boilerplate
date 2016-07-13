@@ -2,8 +2,6 @@
 "use strict";
 
 let SongLister = require("./songMaker");
-// let loadSongs = require("./loadSongs");
-// console.log("SongLister", SongLister);
 
 $(document).ready(function() {
 
@@ -35,11 +33,29 @@ $(document).ready(function() {
 	var addViewEl = $("#addSongSection");
 	var sideBarEl = $("#sidebar");
 
-	// loading songs
+	// loading songs variables
 	var songList = []; //hold array of all songs
 	var song2List = []; //to hold the 2nd json of songs
 	var songsAdded = false; //determine if 2nd set of songs have been loaded
 
+	let displaySongList = function (list, type) { //could be current list or filtered list type
+		listViewEl.empty();
+		for (var i = 0; i < list.length; i++) { //add each song to the DOM
+			listViewEl.append(`<section id="section--${i}" class="song"><h2 class="songName">${list[i].title}</h2><p class="artistName">${list[i].artist}</p><p class="albumName">${list[i].album}</p><button id="delBtn--${i}" class="delBtns">Delete Song</button></section>`);
+		}
+		$(".delBtns").on("click", deleteSong);
+
+		if (songsAdded === false) { //if 2nd set of songs has not been added yet, add button for more songs
+			listViewEl.append(`<div id="more"><button id="moreButton">More songs</button></div>`);
+			$("#moreButton").on("click", addMoreSongs);
+		}
+
+		if (type === "filtered") {
+			listViewEl.append(`<div id="more"><button id="removeFilterBtn">Remove filter</button></div>`);
+			$("#removeFilterBtn").on("click", showAll);
+		}
+		updateFilterSelects(list, type);
+	};
 
 	// update select dropdowns with current artists and albums
 	function updateFilterSelects(list, type){
@@ -60,53 +76,24 @@ $(document).ready(function() {
 	}
 
 	function deleteSong(clickedButton) {
-		// console.log("songList", songList);
 		var clickedBtnID = event.target.id.split("--")[1]; //get ID # of clicked delete button
-
-		console.log("clickedBtnID", clickedBtnID);
-		songList.splice(clickedBtnID, 1); //remove 
-		console.log("songList", songList);
+		songList.splice(clickedBtnID, 1); //remove that song from array
 		displaySongList(songList, "current");
 	}
 
-	function showAll() {
+	function showAll() {  //remove filtering + show all current songs
 		displaySongList(songList, "current");
 	}
-
-
-	let displaySongList = function (list, type) { //could be current list or filtered list type
-		listViewEl.empty();
-		console.log("display list", list);
-		for (var i = 0; i < list.length; i++) { //add each song to the DOM
-			listViewEl.append(`<section id="section--${i}" class="song"><h2 class="songName">${list[i].title}</h2><p class="artistName">${list[i].artist}</p><p class="albumName">${list[i].album}</p><button id="delBtn--${i}" class="delBtns">Delete Song</button></section>`);
-		}
-		$(".delBtns").on("click", deleteSong);
-
-		if (songsAdded === false) { //if 2nd set of songs has not been added yet, add button for more songs
-			listViewEl.append(`<div id="more"><button id="moreButton">More songs</button></div>`);
-			$("#moreButton").on("click", addMoreSongs);
-		}
-
-		if (type === "filtered") {
-			listViewEl.append(`<div id="more"><button id="removeFilterBtn">Remove filter</button></div>`);
-			$("#removeFilterBtn").on("click", showAll);
-		}
-
-		// $(document).on("click", ".delBtns", deleteSong); //adds listeners to all delete buttons
-		updateFilterSelects(list, type);
-	};
 
 
 	function addMoreSongs () {
 		SongLister.loadSongs.getMoreSongs().
 		then(function(data2){
 			song2List = data2.songs;
-			console.log("song2List", song2List);
 			for (let i = 0; i < song2List.length; i++) { //add new songs from 2nd JSON to current song list array
 				var newSongObject = song2List[i];
 				songList.push(newSongObject);
 			}
-			console.log("songList", songList);
 			songsAdded = true;
 			displaySongList(songList, "current");
 		});
@@ -126,7 +113,6 @@ $(document).ready(function() {
 	SongLister.loadSongs.getSongList().
 		then(function(data1){
 			songList = data1.songs;
-			console.log("songList", songList);
 			displaySongList(songList, "current");
 		});
 
@@ -147,11 +133,7 @@ $(document).ready(function() {
 
 "use strict";
 
-// let loadSongs = require("./loadSongs");
-
 let filter = function(currentList){ //create an array only with filtered songs
-	// var currentList = loadSongs.getCurrentList();
-	console.log("currentList", currentList);
 	var filterArtist = $("#artistSelect option:selected").text();
 	var filterAlbum = $("#albumSelect option:selected").text();
 
@@ -180,34 +162,29 @@ module.exports = filter;
 
 "use strict";
 
-
 let getSongList = function(){
 	return new Promise((resolve, reject) => {
 		$.ajax({
 	    url: "songs.json"
 	  }).done(function(data) {
-	  	console.log("data", data);
 	    resolve(data);
     }).fail(function(xhr, status, error) {
       reject(error);
     });
   });
 };
-
 
 let getMoreSongs = function(){
 	return new Promise((resolve, reject) => {
 		$.ajax({
 	    url: "songs2.json"
 	  }).done(function(data) {
-	  	console.log("data2", data);
 	    resolve(data);
     }).fail(function(xhr, status, error) {
       reject(error);
     });
   });
 };
-
 
 let addSong = function(){
 	var newSongToAdd = {};
@@ -216,14 +193,7 @@ let addSong = function(){
   newSongToAdd.album = $("#newAlbum").val();
   $(".newSongInput").val("");
   return newSongToAdd;
- //  songList.push(newSongToAdd);
- // 	// switchView();
-	// displaySongs(songList, "current");
-	// updateFilterSelects(songList);
 };
-
-
-
 
 module.exports = {getSongList, getMoreSongs, addSong};
 
@@ -234,7 +204,6 @@ module.exports = {getSongList, getMoreSongs, addSong};
 let filter = require("./filter");
 let switchViews = require("./switchViews");
 let loadSongs = require("./loadSongs");
-// let displaySongs = require("./displaySongs");
 
 let SongMaker = {filter, switchViews, loadSongs};
 
@@ -258,9 +227,7 @@ let switchViews = function(currentView) {
 		$("#addSongSection").addClass("visible").removeClass("hidden");
 		$("#sidebar").addClass("hidden").removeClass("visible");	
 	}
-
 };
-
 
 module.exports = switchViews;
 },{}]},{},[1])

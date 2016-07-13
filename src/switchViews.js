@@ -13,8 +13,6 @@ let switchViews = function(currentView) {
 		$("#addSongSection").addClass("visible").removeClass("hidden");
 		$("#sidebar").addClass("hidden").removeClass("visible");	
 	}
-
 };
-
 
 module.exports = switchViews;
