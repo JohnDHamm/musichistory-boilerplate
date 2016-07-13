@@ -2,25 +2,6 @@
 
 "use strict";
 
-// let displaySongs = require("./displaySongs");
-
-// loading songs
-// var songList =[]; //hold array of all songs
-// var song2List = []; //to hold the 2nd json of songs
-// var songsAdded = false; //determine if 2nd set of songs have been loaded
-
-// var catAJAX = function() {
-//   return new Promise((resolve, reject) => {
-//     $.ajax({
-//       url: "../categories.json"
-//     }).done(function(data) {
-//     	// console.log("data", data);
-//       resolve(data);
-//     }).fail(function(xhr, status, error) {
-//       reject(error);
-//     });
-//   });
-// };
 
 let getSongList = function(){
 	return new Promise((resolve, reject) => {
@@ -34,38 +15,19 @@ let getSongList = function(){
     });
   });
 };
-	    	// console.log("songs", data.songs);
-// 	    	var songs = data.songs;
-// 	    	return songs;   
-// 	    	//  	console.log("loadSongs list", songList);
-// 				// displaySongs(songList, "current");
 
-// 				// //add button for 2nd json of more songs
-// 				// $("#main").append(`<div id="more"><button id="moreButton">More songs</button></div>`);
-// 				// $("#moreButton").on("click", getMoreSongs);
-// 				// // updateFilterSelects(songList);
-// 	    });
-
-// };
 
 let getMoreSongs = function(){
-	$.ajax({
-      url: "songs2.json"
-    }).done(function(data) {
-    	var songs = data.songs;
-    	return songs;
-
-    	
-		// for (var i = 0; i < song2List.length; i++) { //add new songs from 2nd JSON to current song list array
-		// 	var newSongObject = song2List[i];
-		// 	list.push(newSongObject);
-		});
-		// console.log("moreSongs list", songList);
-		// displaySongs(songList, "current");
-		// updateFilterSelects(songList);
-    // }).fail(function(xhr, status, error) {
-    //   reject(error);
-    // });
+	return new Promise((resolve, reject) => {
+		$.ajax({
+	    url: "songs2.json"
+	  }).done(function(data) {
+	  	console.log("data2", data);
+	    resolve(data);
+    }).fail(function(xhr, status, error) {
+      reject(error);
+    });
+  });
 };
 
 
@@ -75,6 +37,7 @@ let addSong = function(){
   newSongToAdd.artist = $("#newArtist").val();
   newSongToAdd.album = $("#newAlbum").val();
   $(".newSongInput").val("");
+  return newSongToAdd;
  //  songList.push(newSongToAdd);
  // 	// switchView();
 	// displaySongs(songList, "current");
@@ -82,10 +45,7 @@ let addSong = function(){
 };
 
 
-let getCurrentList = function(){
-	// return songList;
-};
 
 
-module.exports = {getSongList, getMoreSongs, addSong, getCurrentList};
+module.exports = {getSongList, getMoreSongs, addSong};
 

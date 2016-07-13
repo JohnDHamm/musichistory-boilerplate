@@ -16,8 +16,10 @@ $(document).ready(function() {
 
 	// add new song button
 	$("#addSongBtn").click(function(){
-		SongLister.loadSongs.addSong();
+		var newSongToAdd = SongLister.loadSongs.addSong();
+		songList.push(newSongToAdd);
 		SongLister.switchViews("viewSongs");
+		displaySongList(songList, "current");
 	});
 
 	//filtering
@@ -87,18 +89,20 @@ $(document).ready(function() {
 		updateFilterSelects(list, type);
 	};
 
+
 	function addMoreSongs () {
-		var moreSongs = SongLister.loadSongs.getMoreSongs();
-		console.log("moreSongs", moreSongs);
-		for (let i = 0; i < moreSongs.length; i++) { //add new songs from 2nd JSON to current song list array
-			var newSongObject = moreSongs[i];
-			songList.push(newSongObject);
+		SongLister.loadSongs.getMoreSongs().
+		then(function(data2){
+			song2List = data2.songs;
+			console.log("song2List", song2List);
+			for (let i = 0; i < song2List.length; i++) { //add new songs from 2nd JSON to current song list array
+				var newSongObject = song2List[i];
+				songList.push(newSongObject);
+			}
 			console.log("songList", songList);
-		}
+			displaySongList(songList, "current");
+		});
 	}
-
-
-
 
 
 
@@ -118,9 +122,6 @@ $(document).ready(function() {
 			displaySongList(songList, "current");
 		});
 
-	// songList = loadSongs.getSongList(); //use promise .then
-	// console.log("songList", songList);
-  // console.log("loadSongs list", songList);
 
 
 
