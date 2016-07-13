@@ -7,10 +7,10 @@
 
 "use strict";
 
-let loadSongs = require("./loadSongs");
+// let loadSongs = require("./loadSongs");
 
-let filter = function(){ //create an array only with filtered songs
-	var currentList = loadSongs.getCurrentList();
+let filter = function(currentList){ //create an array only with filtered songs
+	// var currentList = loadSongs.getCurrentList();
 	console.log("currentList", currentList);
 	var filterArtist = $("#artistSelect option:selected").text();
 	var filterAlbum = $("#albumSelect option:selected").text();
@@ -18,14 +18,19 @@ let filter = function(){ //create an array only with filtered songs
 	var filterList = [];
 	for (let i = 0; i < currentList.length; i++) {
 		console.log("currentList[i].artist", currentList[i].artist);
-		if (currentList[i].artist === filterArtist) {
+		if (currentList[i].artist === filterArtist && currentList[i].album === filterAlbum) {
 			filterList.push(currentList[i]);
 		}
-		if (currentList[i].album === filterAlbum) {
-			filterList.push(currentList[i]);
-		}
+		// if (currentList[i].album === filterAlbum) {
+		// 	filterList.push(currentList[i]);
+		// }
 	}
 	console.log("filterList", filterList);
+
+	// var uniqueNames = [];
+	// $.each(filterList, function(i, el){
+ //    if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+	// });
 	return filterList;
 };
 

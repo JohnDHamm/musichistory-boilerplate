@@ -24,7 +24,7 @@ $(document).ready(function() {
 
 	//filtering
 	$("#filterBtn").click(function(){
-		var filteredList = SongLister.filter();
+		var filteredList = SongLister.filter(songList);
 		// console.log("testList", testList);
 		// SongLister.displaySongs(filteredList, "filtered");
 		displaySongList(filteredList, "filtered");
@@ -42,18 +42,15 @@ $(document).ready(function() {
 
 	// update select dropdowns with current artists and albums
 	function updateFilterSelects(list, type){
-		// var listLength = list.length;
 		if (type !== "filtered") { //do not update selects if filtering
 			var artistsArray = [];
 			var albumArray = [];
 			$("#artistSelect").empty(); //clear artists select dropdown
-			// $("#artistSelect").append(`<option disabled selected>select artist</option>`); //add select notification
 			for (var i = 0; i < list.length; i++) {
 				artistsArray.push(list[i].artist);
 				$("#artistSelect").append(`<option>${list[i].artist}</option>`);
 
 			}$("#albumSelect").empty(); //clear album select dropdown
-			// $("#albumSelect").append(`<option disabled selected>select album</option>`); //add select notification
 			for (let i = 0; i < list.length; i++) {
 				artistsArray.push(list[i].artist);
 				$("#albumSelect").append(`<option>${list[i].album}</option>`);
@@ -71,6 +68,10 @@ $(document).ready(function() {
 		displaySongList(songList, "current");
 	}
 
+	function showAll() {
+		displaySongList(songList, "current");
+	}
+
 
 	let displaySongList = function (list, type) { //could be current list or filtered list type
 		listViewEl.empty();
@@ -78,14 +79,19 @@ $(document).ready(function() {
 		for (var i = 0; i < list.length; i++) { //add each song to the DOM
 			listViewEl.append(`<section id="section--${i}" class="song"><h2 class="songName">${list[i].title}</h2><p class="artistName">${list[i].artist}</p><p class="albumName">${list[i].album}</p><button id="delBtn--${i}" class="delBtns">Delete Song</button></section>`);
 		}
+		$(".delBtns").on("click", deleteSong);
 
 		if (songsAdded === false) { //if 2nd set of songs has not been added yet, add button for more songs
 			listViewEl.append(`<div id="more"><button id="moreButton">More songs</button></div>`);
 			$("#moreButton").on("click", addMoreSongs);
 		}
 
+		if (type === "filtered") {
+			listViewEl.append(`<div id="more"><button id="removeFilterBtn">Remove filter</button></div>`);
+			$("#removeFilterBtn").on("click", showAll);
+		}
+
 		// $(document).on("click", ".delBtns", deleteSong); //adds listeners to all delete buttons
-		$(".delBtns").on("click", deleteSong);
 		updateFilterSelects(list, type);
 	};
 
@@ -100,6 +106,7 @@ $(document).ready(function() {
 				songList.push(newSongObject);
 			}
 			console.log("songList", songList);
+			songsAdded = true;
 			displaySongList(songList, "current");
 		});
 	}
