@@ -9,10 +9,24 @@
 
 let loadSongs = require("./loadSongs");
 
-let filter = function(artist, album){
+let filter = function(){ //create an array only with filtered songs
+	var currentList = loadSongs.getCurrentList();
+	console.log("currentList", currentList);
+	var filterArtist = $("#artistSelect option:selected").text();
+	var filterAlbum = $("#albumSelect option:selected").text();
 
-
-
+	var filterList = [];
+	for (let i = 0; i < currentList.length; i++) {
+		console.log("currentList[i].artist", currentList[i].artist);
+		if (currentList[i].artist === filterArtist) {
+			filterList.push(currentList[i]);
+		}
+		if (currentList[i].album === filterAlbum) {
+			filterList.push(currentList[i]);
+		}
+	}
+	console.log("filterList", filterList);
+	return filterList;
 };
 
 module.exports = filter;

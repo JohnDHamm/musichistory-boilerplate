@@ -2,20 +2,16 @@
 
 "use strict";
 
-var listViewEl = $("#main");
-var addViewEl = $("#addSongSection");
-var sideBarEl = $("#sidebar");
-
 let switchViews = function(currentView) {
 
 	if (currentView === "viewSongs") {
-		listViewEl.addClass("visible").removeClass("hidden");
-		addViewEl.addClass("hidden").removeClass("visible");
-		sideBarEl.addClass("visible").removeClass("hidden");	
+		$("#main").addClass("visible").removeClass("hidden");
+		$("#addSongSection").addClass("hidden").removeClass("visible");
+		$("#sidebar").addClass("visible").removeClass("hidden");	
 	} else {
-		listViewEl.addClass("hidden").removeClass("visible");
-		addViewEl.addClass("visible").removeClass("hidden");
-		sideBarEl.addClass("hidden").removeClass("visible");	
+		$("#main").addClass("hidden").removeClass("visible");
+		$("#addSongSection").addClass("visible").removeClass("hidden");
+		$("#sidebar").addClass("hidden").removeClass("visible");	
 	}
 
 };
